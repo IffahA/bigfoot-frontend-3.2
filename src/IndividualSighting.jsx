@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import { BACKEND_URL } from "./constants";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function IndividualSighting() {
   const [indSighting, setIndSighting] = useState([]);
@@ -45,6 +45,10 @@ export default function IndividualSighting() {
           {indSighting.OBSERVED}
         </p>
       )}
+      <br />
+      <Link to={`/`}>
+        <p>Go back to homepage</p>
+      </Link>
     </div>
   );
 }
