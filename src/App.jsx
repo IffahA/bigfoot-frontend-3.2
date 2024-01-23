@@ -5,6 +5,7 @@ import "./App.css";
 import { BACKEND_URL } from "./constants";
 import Sightings from "./Sightings";
 import IndividualSighting from "./IndividualSighting";
+import Form from "./Form";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 function App() {
@@ -29,6 +30,14 @@ function App() {
       element: (
         <div>
           <IndividualSighting />
+        </div>
+      ),
+    },
+    {
+      path: "/new",
+      element: (
+        <div>
+          <Form />
         </div>
       ),
     },

@@ -18,6 +18,16 @@ export default function Sightings() {
 
       //fetching data from backend
       const response = await axios.get(`${BACKEND_URL}/sightings`);
+
+      //function to convert ISO date to string
+      const convertISOToString = (isoDate) => {
+        const dateObject = new Date(isoDate);
+        return dateObject.toDateString();
+      };
+
+      response.data.forEach((data) => {
+        data.date = convertISOToString(data.date);
+      });
       console.log(response.data);
 
       //store fetched data in state
@@ -29,12 +39,6 @@ export default function Sightings() {
     loadData();
   }, []);
 
-  //retrieves data for specific sighting
-  // const handleClick = async (index) => {
-  //   let respnse = await axios.get(`http://[::1]:3000/sightings/${index}`);
-  //   console.log(response.data);
-  // };
-
   return (
     <>
       <div>
@@ -45,7 +49,8 @@ export default function Sightings() {
             sighting.map((item, index) => (
               <li key={index}>
                 <br />
-                <Link to={`/sightings/${index}`}>{item.YEAR}</Link>
+                <Link to={`/sightings/${item.id}`}>{item.date} </Link> <br />
+                {item.location} {item.notes}
               </li>
             ))
           )}

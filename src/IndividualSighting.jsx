@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 export default function IndividualSighting() {
   const [indSighting, setIndSighting] = useState([]);
   const [loading, setLoading] = useState(false);
-  let index = useParams();
+  let id = useParams();
 
   //retrieves individua; sighting data
   useEffect(() => {
@@ -15,14 +15,24 @@ export default function IndividualSighting() {
       //till data is fetched, show loading page
       setLoading(true);
 
-      index = JSON.stringify(index.sightingIndex);
-      index = Number(index.slice(1, index.length - 1));
+      id = JSON.stringify(id.sightingIndex);
+      id = Number(id.slice(1, id.length - 1));
 
-      console.log(index);
+      console.log(id);
 
       //fetching data from backend
-      const response = await axios.get(`${BACKEND_URL}/sightings/${index}`);
+      const response = await axios.get(`${BACKEND_URL}/sightings/${id}`);
       console.log(response.data);
+
+      //function to convert ISO date to string
+      const convertISOToString = (isoDate) => {
+        const dateObject = new Date(isoDate);
+        return dateObject.toDateString();
+      };
+
+      response.data.date = convertISOToString(response.data.date);
+
+      console.log(response);
 
       //store fetched data in state
       setIndSighting(response.data);
@@ -39,10 +49,9 @@ export default function IndividualSighting() {
       ) : (
         <p>
           {" "}
-          {indSighting.YEAR} <br />
-          {indSighting.SEASON} {indSighting.MONTH}
+          {indSighting.date} <br />
+          {indSighting.location} {indSighting.notes}
           <br />
-          {indSighting.OBSERVED}
         </p>
       )}
       <br />
