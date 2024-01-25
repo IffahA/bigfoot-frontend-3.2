@@ -42,6 +42,9 @@ export default function Sightings() {
   return (
     <>
       <div>
+        <Link to={`/new`}>
+          <button>Add sighting</button>
+        </Link>
         <ul>
           {loading ? (
             <h4>Loading, please wait</h4>

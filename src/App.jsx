@@ -6,6 +6,7 @@ import { BACKEND_URL } from "./constants";
 import Sightings from "./Sightings";
 import IndividualSighting from "./IndividualSighting";
 import Form from "./Form";
+import Comment from "./Comment";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       element: (
         <div>
           <IndividualSighting />
+          <Comment />
         </div>
       ),
     },

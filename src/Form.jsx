@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Form() {
   const [newSighting, setnewSighting] = useState({
@@ -9,6 +10,9 @@ export default function Form() {
     location: "",
     notes: "",
   });
+
+  //navigate hook
+  const navigate = useNavigate();
 
   //converts today's date to set max in form
   const max = new Date().toISOString().slice(0, 16);
@@ -29,6 +33,8 @@ export default function Form() {
       location: "",
       notes: "",
     });
+
+    navigate(`../sightings/${response.data.id}`);
   };
 
   //sets state when form inputs added
