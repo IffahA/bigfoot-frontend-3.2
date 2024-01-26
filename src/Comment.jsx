@@ -59,7 +59,7 @@ export default function Comment() {
 
     console.log(newComment);
 
-    let comments = await await axios.get(
+    let comments = await axios.get(
       `${BACKEND_URL}/sightings/${sightingId}/comments`
     );
     console.log(comments.data);

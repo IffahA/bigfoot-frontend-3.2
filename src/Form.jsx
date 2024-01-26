@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 
 export default function Form() {
+  const [allCategories, setAllCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [newSighting, setnewSighting] = useState({
     date: "",
     location: "",
     notes: "",
   });
+
+  let selectedCategoryIds = [];
 
   //navigate hook
   const navigate = useNavigate();
@@ -22,10 +26,13 @@ export default function Form() {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    let response = await axios.post(
-      `${BACKEND_URL}/sightings/sighting`,
-      newSighting
-    );
+    const selectedCategoryIds = selectedCategories.map(({ value }) => value);
+    console.log(selectedCategoryIds);
+
+    let response = await axios.post(`${BACKEND_URL}/sightings/sighting`, {
+      ...newSighting,
+      selectedCategoryIds,
+    });
     console.log(response);
 
     setnewSighting({
@@ -33,6 +40,8 @@ export default function Form() {
       location: "",
       notes: "",
     });
+
+    setSelectedCategories([]);
 
     navigate(`../sightings/${response.data.id}`);
   };
@@ -49,9 +58,35 @@ export default function Form() {
     console.log(newSighting);
   };
 
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/categories`).then((response) => {
+      setAllCategories(response.data);
+    });
+    // Only run this effect on component mount
+  }, []);
+
+  const categoryOptions = allCategories.map((category) => ({
+    // value is what we store
+    value: category.id,
+    // label is what we display
+    label: category.name,
+  }));
+
+  const handleSelectChange = (categories) => {
+    setSelectedCategories(categories);
+    // selectedCategoryIds = selectedCategories.map(({ value }) => value);
+    // console.log(selectedCategoryIds);
+  };
+
   return (
     <div>
       <form onSubmit={submitForm}>
+        <Select
+          isMulti
+          options={categoryOptions}
+          value={selectedCategories}
+          onChange={handleSelectChange}
+        />
         <label>
           Location
           <input type="text" name="location" onChange={handleChange} />
